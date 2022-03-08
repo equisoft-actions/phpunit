@@ -6,7 +6,7 @@ inputs:
   working-directory:
     description: "Workflow working directory"
     default: '.'
-    required: false
+    required: true
   report-name:
     description: The name of the archived report. It must follow the convention detailed by our ADRs.
     required: true
