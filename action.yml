@@ -30,7 +30,7 @@ runs:
     - name: PHPUnit
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: ./vendor/bin/phpunit --coverage-clover ${{ inputs.working-directory }}/reports/${{ inputs.coverage-report-name }}  --log-junit ${{ inputs.working-directory }}/reports/${{ inputs.report-name }} ${{ extra-args }}
+      run: ./vendor/bin/phpunit --coverage-clover ${{ inputs.working-directory }}/reports/${{ inputs.coverage-report-name }}  --log-junit ${{ inputs.working-directory }}/reports/${{ inputs.report-name }} ${{ inputs.extra-args }}
 
     - name: Upload report
       uses: actions/upload-artifact@v2
