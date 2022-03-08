@@ -1,0 +1,59 @@
+name: Psalm Taint analysis
+description: |
+  Run psalm with --taint-analysis and upload sarif file artifact
+
+inputs:
+  working-directory:
+    description: "Workflow working directory"
+    default: '.'
+    required: false
+  report-name:
+    description: The name of the archived report. It must follow the convention detailed by our ADRs.
+    required: true
+    default: phpunit.junit.xml
+  coverage-report-name:
+    description: Code coverage artifact file name.
+    required: true
+    default: phpunit.clover.xml
+  report-retention-days:
+    description: "Duration in days to preserve reports."
+    required: false
+    default: "5"
+  extra-args:
+    description: 'Additional arguments to pass to phpunit.'
+    default: ''
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: PHPUnit
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: ./vendor/bin/phpunit --coverage-clover ${{ inputs.working-directory }}/reports/${{ inputs.coverage-report-name }}  --log-junit ${{ inputs.working-directory }}/reports/${{ inputs.report-name }} ${{ extra-args }}
+
+    - name: Upload report
+      uses: actions/upload-artifact@v2
+      if: "!cancelled()"
+      with:
+        name: ${{ inputs.report-name }}
+        retention-days: ${{ inputs.report-retention-days }}
+        if-no-files-found: error
+        path: ${{ inputs.working-directory }}/reports/${{ inputs.report-name }}
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      if: "!cancelled()"
+      with:
+        name: ${{ inputs.coverage-report-name }}
+        retention-days: ${{ inputs.report-retention-days }}
+        if-no-files-found: error
+        path: ${{ inputs.working-directory }}/reports/${{ inputs.coverage-report-name }}
+
+    - name: Create annotations
+      uses: mikepenz/action-junit-report@v2.5.1
+      if: "!cancelled() && github.actor != 'dependabot[bot]'"
+      with:
+        check_name: PHPUnit
+        report_paths: |
+          ${{ inputs.working-directory }}/reports/${{ inputs.report-name }}
