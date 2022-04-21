@@ -1,6 +1,6 @@
-name: Psalm Taint analysis
+name: PHPUnit
 description: |
-  Run psalm with --taint-analysis and upload sarif file artifact
+  Runs PHPUnit and outputs a JUnit report, and a Clover report for coverage
 
 inputs:
   working-directory:
