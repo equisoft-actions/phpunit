@@ -33,7 +33,7 @@ runs:
       run: ./vendor/bin/phpunit --coverage-clover ./reports/${{ inputs.coverage-report-name }}  --log-junit ./reports/${{ inputs.report-name }} ${{ inputs.extra-args }}
 
     - name: Upload report
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
       if: "!cancelled()"
       with:
         name: ${{ inputs.report-name }}
@@ -42,7 +42,7 @@ runs:
         path: ${{ inputs.working-directory }}/reports/${{ inputs.report-name }}
 
     - name: Upload coverage report
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
       if: "!cancelled()"
       with:
         name: ${{ inputs.coverage-report-name }}
@@ -51,7 +51,7 @@ runs:
         path: ${{ inputs.working-directory }}/reports/${{ inputs.coverage-report-name }}
 
     - name: Create annotations
-      uses: mikepenz/action-junit-report@v6
+      uses: mikepenz/action-junit-report@bccf2e31636835cf0874589931c4116687171386 # v6
       if: "!cancelled() && github.actor != 'dependabot[bot]'"
       with:
         check_name: PHPUnit
